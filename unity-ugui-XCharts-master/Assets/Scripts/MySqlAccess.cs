@@ -43,6 +43,7 @@ public class MySqlAccess
     /// </summary>
     public void OpenSql()
     {
+        Debug.Log("OpenSql");
         try
         {
             string mySqlString = string.Format("Database={0};Data Source={1};User Id={2};Password={3};port={4}"
@@ -50,6 +51,7 @@ public class MySqlAccess
             mySqlConnection = new MySqlConnection(mySqlString);
             //if(mySqlConnection.State == ConnectionState.Closed)
             mySqlConnection.Open();
+            Debug.Log("服务器连接成功");
 
         }
         catch (Exception e)
@@ -81,28 +83,13 @@ public class MySqlAccess
     /// <param name="operation">条件操作符</param>
     /// <param name="value">条件的值</param>
     /// <returns></returns>
-    public DataSet Select(string tableName, string[] items, string[] whereColumnName,
-        string[] operation, string[] value)
+    public DataSet Select(string query)
     {
-
-        if (whereColumnName.Length != operation.Length || operation.Length != value.Length)
-        {
-            throw new Exception("输入不正确：" + "要查询的条件、条件操作符、条件值 的数量不一致！");
-        }
-        string query = "Select " + items[0];
-        for (int i = 1; i < items.Length; i++)
-        {
-            query += "," + items[i];
-        }
-
-        query += " FROM " + tableName + " WHERE " + whereColumnName[0] + " " + operation[0] + " '" + value[0] + "'";
-        for (int i = 1; i < whereColumnName.Length; i++)
-        {
-            query += " and " + whereColumnName[i] + " " + operation[i] + " '" + value[i] + "'";
-        }
+        MySqlCommand cmd = new MySqlCommand(query, mySqlConnection);
         return QuerySet(query);
 
     }
+    
 
     /// <summary>
     /// 执行SQL语句

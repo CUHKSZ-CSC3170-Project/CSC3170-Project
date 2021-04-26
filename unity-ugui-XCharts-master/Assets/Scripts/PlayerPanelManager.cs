@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Data;
+using System.Text.RegularExpressions;
 
 namespace MyDbDemo
 {
@@ -40,7 +42,7 @@ namespace MyDbDemo
         void Awake()
         {
             content = this.gameObject.transform.Find("Scroll View").Find("Viewport").Find("Content").gameObject;
-            SearchInputObject = this.gameObject.transform.Find("SearchButton").Find("Text").gameObject;
+            SearchInputObject = this.gameObject.transform.Find("InputField").gameObject;
         }
 
         // Update is called once per frame
@@ -51,27 +53,46 @@ namespace MyDbDemo
         public void LoadData()
         {
             // load data from server
-            string SearchInput = SearchInputObject.GetComponent<Text>().text;
+            string SearchInput = SearchInputObject.GetComponent<InputField>().text;
+            DataSet ds=MySqlSearchManager.Instance.NameSearch(SearchInput);
+        
             List<PlayerInfo> playerList = new List<PlayerInfo>();
             // ....
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
-            playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            for (int i = 0; i < ds.Tables[0].Rows.Count;i++)
+            {
+                string name = ds.Tables[0].Rows[i][1].ToString();
+                string [] names = Regex.Split(name, "\\s+",RegexOptions.IgnoreCase);
+                string first_name=names[0];
+                string second_name="";
+                if (names.Length == 2)
+                {
+                    second_name = names[1];
+                }
+                
+                playerList.Add(new PlayerInfo(first_name, second_name,
+                   ds.Tables[0].Rows[i][4].ToString(), ds.Tables[0].Rows[i][3].ToString(), ds.Tables[0].Rows[i][2].ToString(), 23.333));
+                
+
+            }
+            
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
+            //playerList.Add(new PlayerInfo("test", "test", "test", "test", "test", 23.333));
 
 
 
@@ -110,11 +131,13 @@ namespace MyDbDemo
 
             }
         }
+        
+            
 
 
             #region UI control
 
-            public void ShowPanel()
+        public void ShowPanel()
         {
             this.gameObject.SetActive(true);
         }
