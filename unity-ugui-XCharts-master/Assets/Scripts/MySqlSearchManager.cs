@@ -58,7 +58,7 @@ public class MySqlSearchManager : MonoBehaviour
     public DataSet NameSearch(string input)
     {
         mysql.OpenSql();
-        string sql = "SELECT * FROM player WHERE NAME LIKE '%"+input+"%' ORDER BY ID;";
+        string sql = "SELECT * FROM player Left Join player_winrate on player.ID=player_winrate.playerID WHERE NAME LIKE '%" + input+"%' ORDER BY ID;";
         Debug.Log("sql:" + sql);
         DataSet name_ds=mysql.Select(sql);
         if (name_ds != null)
@@ -76,10 +76,31 @@ public class MySqlSearchManager : MonoBehaviour
         return name_ds;
     }
 
+    public DataSet PlayerIDSearch(string input)
+    {
+        mysql.OpenSql();
+        string sql = "SELECT * FROM player Left Join player_winrate on player.ID=player_winrate.playerID WHERE ID like '%" + input + "%' ORDER BY ID;";
+        Debug.Log("sql:" + sql);
+        DataSet playerID_ds = mysql.Select(sql);
+        if (playerID_ds != null)
+        {
+            Debug.Log("结果不为空");
+            for (int i = 0; i < playerID_ds.Tables[0].Columns.Count; i++)
+            {
+                Debug.Log(playerID_ds.Tables[0].Rows[0][i]);
+            }
+        }
+        else
+        {
+            Debug.Log("结果为空");
+        }
+        return playerID_ds;
+    }
+
     public DataSet TeamSearch(string input)
     {
         mysql.OpenSql();
-        string sql = "SELECT * FROM team WHERE NAME LIKE '%" + input + "%' ORDER BY ID;";
+        string sql = "SELECT * FROM team left join host_winrate on team.name=host_winrate.host_team left join away_winrate on team.name=away_winrate.away_team WHERE name LIKE '%" + input + "%' ORDER BY found_year;";
         Debug.Log("sql:" + sql);
         DataSet team_ds = mysql.Select(sql);
         if (team_ds != null)
@@ -97,5 +118,45 @@ public class MySqlSearchManager : MonoBehaviour
         return team_ds;
     }
 
+    public DataSet MatchIDSearch(string input)
+    {
+        mysql.OpenSql();
+        string sql = "SELECT * FROM soccer_game.match WHERE matchID LIKE '%" + input + "%' ORDER BY matchID;";
+        Debug.Log("sql:" + sql);
+        DataSet match_ds = mysql.Select(sql);
+        if (match_ds != null)
+        {
+            Debug.Log("结果不为空");
+            for (int i = 0; i < match_ds.Tables[0].Columns.Count; i++)
+            {
+                Debug.Log(match_ds.Tables[0].Rows[0][i]);
+            }
+        }
+        else
+        {
+            Debug.Log("结果为空");
+        }
+        return match_ds;
+    }
 
+    public DataSet MatchDateSearch(string input)
+    {
+        mysql.OpenSql();
+        string sql = "SELECT * FROM soccer_game.match WHERE date LIKE '%" + input + "%' ORDER BY matchID;";
+        Debug.Log("sql:" + sql);
+        DataSet match_ds = mysql.Select(sql);
+        if (match_ds != null)
+        {
+            Debug.Log("结果不为空");
+            for (int i = 0; i < match_ds.Tables[0].Columns.Count; i++)
+            {
+                Debug.Log(match_ds.Tables[0].Rows[0][i]);
+            }
+        }
+        else
+        {
+            Debug.Log("结果为空");
+        }
+        return match_ds;
+    }
 }
