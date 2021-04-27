@@ -68,7 +68,7 @@ namespace MyDbDemo
         void PlayerDataSetDisplay(DataSet ds)
         {
             List<PlayerInfo> PlayerList = new List<PlayerInfo>();
-            PlayerList.Add(new PlayerInfo("ID", "Name", "Nation", "Birth Date", "Team Name", "Position", "Win Rate"));
+            PlayerList.Add(new PlayerInfo("ID", "Name", "Nation", "Birth Year", "Team Name", "Position", "Win Rate"));
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {

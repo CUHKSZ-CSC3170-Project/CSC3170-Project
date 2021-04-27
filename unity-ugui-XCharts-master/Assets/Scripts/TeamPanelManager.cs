@@ -14,16 +14,14 @@ namespace MyDbDemo
     {
         public string teamName; // 队名
         public string coachName;
-        public string PlayerPosition;
         public string BirthYear;
         public string hostWinRate; // 胜率
         public string awayWinRate;
 
-        public TeamInfo(string teamName, string coachName, string PlayerPosition, string BirthYear, string hostWinRate, string awayWinRate)
+        public TeamInfo(string teamName, string coachName, string BirthYear, string hostWinRate, string awayWinRate)
         {
             this.teamName = teamName;
             this.coachName = coachName;
-            this.PlayerPosition = PlayerPosition;
             this.BirthYear = BirthYear;
             this.hostWinRate = hostWinRate;
             this.awayWinRate = awayWinRate;
@@ -56,11 +54,11 @@ namespace MyDbDemo
         {
 
             List<TeamInfo> TeamList = new List<TeamInfo>();
-            TeamList.Add(new TeamInfo("Team Name", "Coach Name", "Player Position", "Found Year", "Host Win Rate","Away Win Rate"));
+            TeamList.Add(new TeamInfo("Team Name", "Coach Name",  "Found Year", "Host Win Rate","Away Win Rate"));
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                TeamList.Add(new TeamInfo(ds.Tables[0].Rows[i][0].ToString(), ds.Tables[0].Rows[i][1].ToString(),"PlayerPosition", ds.Tables[0].Rows[i][2].ToString(), ds.Tables[0].Rows[i][5].ToString(), ds.Tables[0].Rows[i][8].ToString()));
+                TeamList.Add(new TeamInfo(ds.Tables[0].Rows[i][0].ToString(), ds.Tables[0].Rows[i][1].ToString(), ds.Tables[0].Rows[i][2].ToString(), ds.Tables[0].Rows[i][5].ToString(), ds.Tables[0].Rows[i][8].ToString()));
             }
 
 
@@ -83,9 +81,6 @@ namespace MyDbDemo
                 AttributeInstance.transform.Find("Text").gameObject.GetComponent<TextMeshProUGUI>().text = TeamList[i].coachName;
                 AttributeInstance.transform.parent = rowInstance.transform;
 
-                AttributeInstance = Instantiate(AttributePrefab) as GameObject;
-                AttributeInstance.transform.Find("Text").gameObject.GetComponent<TextMeshProUGUI>().text = TeamList[i].PlayerPosition;
-                AttributeInstance.transform.parent = rowInstance.transform;
 
                 AttributeInstance = Instantiate(AttributePrefab) as GameObject;
                 AttributeInstance.transform.Find("Text").gameObject.GetComponent<TextMeshProUGUI>().text = TeamList[i].BirthYear;

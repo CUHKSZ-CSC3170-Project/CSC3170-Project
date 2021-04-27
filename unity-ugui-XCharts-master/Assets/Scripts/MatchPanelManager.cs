@@ -65,7 +65,28 @@ namespace MyDbDemo
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                MatchList.Add(new MatchInfo(ds.Tables[0].Rows[i][0].ToString(),ds.Tables[0].Rows[i][1].ToString(), "Home Team Player", ds.Tables[0].Rows[i][2].ToString(),"Away Team Player", ds.Tables[0].Rows[i][3].ToString(), ds.Tables[0].Rows[i][4].ToString(), ds.Tables[0].Rows[i][5].ToString(), ds.Tables[0].Rows[i][6].ToString()+" : "+ ds.Tables[0].Rows[i][7].ToString()));
+                string date = ds.Tables[0].Rows[i][3].ToString();
+
+                string matchID = ds.Tables[0].Rows[i][0].ToString();
+                string homeTeamName = ds.Tables[0].Rows[i][1].ToString();
+                string awayTeamName = ds.Tables[0].Rows[i][2].ToString();
+
+                DataSet d1 = MySqlSearchManager.Instance.MatchSearch_TeamPosition(matchID,homeTeamName);
+                DataSet d2 = MySqlSearchManager.Instance.MatchSearch_TeamPosition(matchID, awayTeamName);
+                Debug.Log("Success");
+
+                string homeConfig="Config  ", awayConfig="Config  ";
+                for (int j = 0; j < d1.Tables[0].Rows.Count; j++)
+                {
+                    homeConfig += "\n"+d1.Tables[0].Rows[j][1].ToString() +" ["+ d1.Tables[0].Rows[j][3].ToString() + "]";
+                }
+                for (int j = 0; j < d2.Tables[0].Rows.Count; j++)
+                {
+                    awayConfig += "\n"+d2.Tables[0].Rows[j][1].ToString() + " [" + d2.Tables[0].Rows[j][3].ToString() + "]";
+                }
+
+
+                MatchList.Add(new MatchInfo(matchID,homeTeamName, homeConfig,awayTeamName,awayConfig,date.Substring(0,date.IndexOf(' ')) , ds.Tables[0].Rows[i][4].ToString(), ds.Tables[0].Rows[i][5].ToString(), ds.Tables[0].Rows[i][6].ToString()+" : "+ ds.Tables[0].Rows[i][7].ToString()));
             }
 
             #region data list view

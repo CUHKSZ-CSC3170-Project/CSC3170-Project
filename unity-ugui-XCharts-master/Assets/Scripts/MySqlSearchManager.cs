@@ -67,7 +67,7 @@ public class MySqlSearchManager : MonoBehaviour
             for (int i = 0; i < name_ds.Tables[0].Columns.Count; i++)
             {
                 Debug.Log(name_ds.Tables[0].Rows[0][i]);
-            } 
+            }
         }
         else
         {
@@ -79,7 +79,7 @@ public class MySqlSearchManager : MonoBehaviour
     public DataSet PlayerIDSearch(string input)
     {
         mysql.OpenSql();
-        string sql = "SELECT * FROM player Left Join player_winrate on player.ID=player_winrate.playerID WHERE ID like '%" + input + "%' ORDER BY ID;";
+        string sql = "SELECT * FROM player Left Join player_winrate on player.ID=player_winrate.playerID WHERE ID=" + input + " ORDER BY ID;";
         Debug.Log("sql:" + sql);
         DataSet playerID_ds = mysql.Select(sql);
         if (playerID_ds != null)
@@ -121,7 +121,7 @@ public class MySqlSearchManager : MonoBehaviour
     public DataSet MatchIDSearch(string input)
     {
         mysql.OpenSql();
-        string sql = "SELECT * FROM soccer_game.match WHERE matchID LIKE '%" + input + "%' ORDER BY matchID;";
+        string sql = "SELECT * FROM soccer_game.match WHERE matchID=" + input + " ORDER BY matchID;";
         Debug.Log("sql:" + sql);
         DataSet match_ds = mysql.Select(sql);
         if (match_ds != null)
@@ -143,6 +143,27 @@ public class MySqlSearchManager : MonoBehaviour
     {
         mysql.OpenSql();
         string sql = "SELECT * FROM soccer_game.match WHERE date LIKE '%" + input + "%' ORDER BY matchID;";
+        Debug.Log("sql:" + sql);
+        DataSet match_ds = mysql.Select(sql);
+        if (match_ds != null)
+        {
+            Debug.Log("结果不为空");
+            for (int i = 0; i < match_ds.Tables[0].Columns.Count; i++)
+            {
+                Debug.Log(match_ds.Tables[0].Rows[0][i]);
+            }
+        }
+        else
+        {
+            Debug.Log("结果为空");
+        }
+        return match_ds;
+    }
+
+    public DataSet MatchSearch_TeamPosition(string matchID,string teamName)
+    {
+        mysql.OpenSql();
+        string sql = "select soccer_game.match.matchID,player.name,player.team_name,player.position from participate left join soccer_game.match on participate.matchID=soccer_game.match.matchID left join player on player.ID=participate.playerID where soccer_game.match.matchID=" + matchID+" and player.team_name='"+teamName +"';";
         Debug.Log("sql:" + sql);
         DataSet match_ds = mysql.Select(sql);
         if (match_ds != null)
