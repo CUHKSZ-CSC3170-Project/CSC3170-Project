@@ -17,6 +17,6 @@ What we accomplished:
 
 ![image-20210501183308192](README.assets/image-20210501183308192.png)
 
-![1](../../../../../桌面/1.jpg)
+![1](README.assets/1.jpg)
 
-![2](../../../../../桌面/2.jpg)
+![2](README.assets/2.jpg)
